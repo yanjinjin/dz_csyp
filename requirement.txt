@@ -4,4 +4,3 @@ MySQL-python
 python-memcached
 peewee==2.1.0
 simplejson
-PIL

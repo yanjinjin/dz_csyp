@@ -10,6 +10,9 @@ rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.r
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
 
 yum -y install gcc nginx mysql-libs mysql-server mysql-devel memcached python-setuptools
+wget https://bootstrap.pypa.io/ez_setup.py -O - | sudo python
+/usr/bin/easy_install pip
+yum install python-devel
 
 2 安装 virtualenv
 easy_install virtualenv
@@ -25,7 +28,7 @@ cd czcake
 source bin/activate
 
 #把源文件放进来
-
+pip install PIL --allow-external PIL --allow-unverified PIL
 pip install -r requirement.txt
 
 mkdir etc
@@ -74,3 +77,5 @@ python manager.py --cmd=syncdb
 三 开始运行
 supervisorctl restart all
 service nginx restart
+或者
+python manager.py --port=80
