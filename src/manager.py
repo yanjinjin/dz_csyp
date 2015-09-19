@@ -15,7 +15,7 @@ from lib.session import MemcacheSessionStore
 from handler import site, admin, ajax, oauth, shop, pay, user
 
 define('cmd', default='runserver', metavar='runserver|syncdb')
-define('port', default=8080, type=int)
+define('port', default=80, type=int)
 
 class Application(tornado.web.Application):
     def __init__(self):
