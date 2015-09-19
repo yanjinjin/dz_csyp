@@ -9,19 +9,12 @@ from model import Oauth, User, UserVcode, Page, Apply, Shop, Ad
 
 @route(r'/', name='index') #首页
 class IndexHandler(BaseHandler):
-    
     def get(self):
-        ads = Ad.select().limit(6)
-        newest = []
-        for shop in Shop.select(Shop.name, Shop.ename, Shop.cover, Shop.price).where((Shop.cid != 2) & (Shop.status != 9)).order_by(Shop.views.desc()).limit(6):
-            shop.price = shop.price.split("~")[0]
-            newest.append(shop)
-        
-        recomm = []
-        for shop in Shop.select(Shop.name, Shop.ename, Shop.cover, Shop.price).where(Shop.status == 1).limit(6):
-            shop.price = shop.price.split("~")[0]
-            recomm.append(shop)
-        self.render("site/index.html", ads = ads, newest = newest, recomm = recomm)
+        oauth = None
+        if 'oauth' in self.session:
+            oauth = self.session['oauth']
+
+        self.render("site/signup.html", oauth = oauth)    
 
 @route(r'/apply', name='apply') #集团购买/会员特惠
 class ApplyHandler(BaseHandler):
