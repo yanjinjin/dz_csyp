@@ -177,7 +177,7 @@ class SignUpHandler(BaseHandler):
                             self.session.save()
                         
                         self.flash("注册成功，请先登录。", "ok")
-                        self.redirect("/signin")
+                        self.render("site/share.html" , user = user, mobile=mobile)
                         return
                     else:
                         self.flash("请输入正确的验证码")

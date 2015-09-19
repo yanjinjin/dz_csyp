@@ -1,0 +1,44 @@
+{% extends "layout/site.html" %}
+
+{% block title %}分享{% endblock %}
+{% block css %}signin{% endblock %}
+{% block js %}sign{% endblock %}
+{% block content %}
+<div class="blank2"></div>
+<div class="wapper"><img src="/style/css/nav_signin.jpg"></div>
+<div class="blank10"></div>
+<div class="wapper">
+    {% if oauth -%}
+
+    <p>
+
+        注册新账户。<br>
+
+        <img src="{{oauth['profile_image_url']}}">
+
+        你好 {{oauth['screen_name']}}！
+
+    </p>
+
+    {%-endif %}
+<div class="free_box">
+    <div class="global_popwin clearfix">
+    	<div class="blank20"></div>
+    	
+    	<div class="blank20"></div>
+    	<div class="pop_form">
+		<div class="share">
+        <input type="text" readonly="readonly" style="width:50%;" value="http://172.16.206.33/signup?sharer={{ mobile }}"></input>
+    	</div>	
+    		<div class="blank20"></div>
+    	</div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block foot %}
+
+{% endblock %}

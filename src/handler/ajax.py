@@ -58,7 +58,7 @@ class VcodeHandler(BaseHandler):
                 result['msg'] = 503
             else:
                 try:
-                    sendmsg(self.settings, mobile, "您在吉米的厨房获取的验证码为" + str(uservcode.vcode))
+                    #sendmsg(self.settings, mobile, "您在吉米的厨房获取的验证码为" + str(uservcode.vcode))
                     uservcode.save()
                     
                     logging.info("sendmsg:%s - %d" % (mobile, uservcode.vcode))
