@@ -175,7 +175,7 @@ class SignUpHandler(BaseHandler):
                             
                             del self.session['oauth']
                             self.session.save()
-                        
+                        User.update(credit = User.credit + 1).where(User.mobile == mobile).execute()
                         self.flash("注册成功，请先登录。", "ok")
                         self.render("site/share.html" , user = user, mobile=mobile)
                         return
