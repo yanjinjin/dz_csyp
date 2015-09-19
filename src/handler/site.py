@@ -122,12 +122,13 @@ class SignUpHandler(BaseHandler):
         if self.get_current_user():
             self.redirect("/")
             return
-        
+      
         oauth = None
         if 'oauth' in self.session:
             oauth = self.session['oauth']
-        
-        self.render("site/signup.html", oauth = oauth)
+        sharer = self.get_argument("sharer", None)
+        logging.info("%s",sharer)
+        self.render("site/signup.html", oauth = oauth, sharer = sharer)
     
     def post(self):
         if self.get_current_user():
@@ -138,6 +139,7 @@ class SignUpHandler(BaseHandler):
         password = self.get_argument("password", None)
         apassword = self.get_argument("apassword", None)
         vcode = self.get_argument("vcode", None)
+        sharer = self.get_argument("sharer", None)
         
         
         user = User()
@@ -168,6 +170,8 @@ class SignUpHandler(BaseHandler):
                             del self.session['oauth']
                             self.session.save()
                         User.update(credit = User.credit + 1).where(User.mobile == mobile).execute()
+                        #if sharer != None
+                        User.update(credit = User.credit + 1).where(User.mobile == sharer).execute()
                         self.flash("注册成功，请先登录。", "ok")
                         self.render("site/share.html" , user = user, mobile=mobile)
                         return
