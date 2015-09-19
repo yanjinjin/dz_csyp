@@ -27,4 +27,9 @@ Do.ready(function(){
 		}
     return false;
     });
+ $('#copyurl').click(function(event) {
+    		var url=document.getElementById("shareurl");
+		url.select(); //选择对象 
+		document.execCommand("Copy","false" ,null); 
+	});
 });
