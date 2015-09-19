@@ -101,8 +101,7 @@ class SignInHandler(BaseHandler):
                             del self.session['oauth']
                         
                         self.session.save()
-                            
-                        self.redirect(self.next_url)
+                        self.render("site/share.html" , user = user, mobile=mobile)    
                         return
                     else:
                         self.flash("此账户被禁止登录，请联系管理员。")
