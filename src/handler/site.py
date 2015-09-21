@@ -13,8 +13,12 @@ class IndexHandler(BaseHandler):
         oauth = None
         if 'oauth' in self.session:
             oauth = self.session['oauth']
-
-        self.render("site/signup.html", oauth = oauth)    
+	user=self.get_current_user()
+        if user:
+            url="/signup?sharer="+user.mobile
+            self.redirect(url,permanent=True)
+	else:
+            self.render("site/signup.html", oauth = oauth)    
 
 @route(r'/apply', name='apply') #集团购买/会员特惠
 class ApplyHandler(BaseHandler):
@@ -61,8 +65,10 @@ class ApplyHandler(BaseHandler):
 class SignInHandler(BaseHandler):
     
     def get(self):
-        if self.get_current_user():
-            self.redirect("/")
+	user=self.get_current_user()
+        if user:
+	    url="/signup?sharer="+user.mobile
+            self.redirect(url,permanent=True)
             return
         
         oauth = None
@@ -101,8 +107,9 @@ class SignInHandler(BaseHandler):
                             del self.session['oauth']
                         
                         self.session.save()
-                        self.render("site/share.html" , user = user, mobile=mobile)    
-                        return
+                        url="/signup?sharer="+user.mobile
+            		self.redirect(url,permanent=True)
+		        return
                     else:
                         self.flash("此账户被禁止登录，请联系管理员。")
                 else:
@@ -119,21 +126,26 @@ class SignInHandler(BaseHandler):
 class SignUpHandler(BaseHandler):
     
     def get(self):
-        if self.get_current_user():
-            self.redirect("/")
-            return
+	user=self.get_current_user()
+        sharer = self.get_argument("sharer", None)
+	if user:
+            url="/signup?sharer="+user.mobile
+            if sharer == None:
+		self.redirect(url,permanent=True)
+            else:
+		self.render("site/share.html" , user = user, mobile=user.mobile)
+	    return
       
         oauth = None
         if 'oauth' in self.session:
             oauth = self.session['oauth']
-        sharer = self.get_argument("sharer", None)
-        logging.info("%s",sharer)
+	sharer = self.get_argument("sharer", None)
         self.render("site/signup.html", oauth = oauth, sharer = sharer)
     
     def post(self):
-        if self.get_current_user():
-            self.redirect("/")
-            return
+        #if self.get_current_user():
+         #   self.redirect("/")
+         #   return
         
         mobile = self.get_argument("mobile", None)
         password = self.get_argument("password", None)
@@ -158,7 +170,9 @@ class SignUpHandler(BaseHandler):
                     if UserVcode.select().where((UserVcode.mobile == mobile) & (UserVcode.vcode == vcode)).count() > 0:
                         UserVcode.delete().where((UserVcode.mobile == mobile) & (UserVcode.vcode == vcode)).execute()
                         user.save()
-                        
+       			user.updatesignin()
+                        self.session['user'] = user
+                 
                         if 'oauth' in self.session:
                             oauth = self.session['oauth']
                             o = Oauth()
@@ -173,8 +187,9 @@ class SignUpHandler(BaseHandler):
                         #if sharer != None
                         User.update(credit = User.credit + 1).where(User.mobile == sharer).execute()
                         self.flash("注册成功，请先登录。", "ok")
-                        self.render("site/share.html" , user = user, mobile=mobile)
-                        return
+                        url="/signup?sharer="+user.mobile
+            		self.redirect(url,permanent=True)
+			return
                     else:
                         self.flash("请输入正确的验证码")
             else:
@@ -203,9 +218,9 @@ class ResetPasswordHandler(BaseHandler):
         self.render("site/resetpassword.html")
         
     def post(self):
-        if self.get_current_user():
-            self.redirect("/")
-            return
+        #if self.get_current_user():
+         #   self.redirect("/")
+          #  return
         
         mobile = self.get_argument("mobile", None)
         password = self.get_argument("password", None)
