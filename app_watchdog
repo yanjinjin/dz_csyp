@@ -1,0 +1,18 @@
+#!/bin/bash
+#set -x
+log_file=/tmp/proccess.log
+/etc/init.d/mysqld start
+/etc/init.d/memcached start
+sleep 2
+
+cd /root/dz_csyp/src&&python manager.py&
+
+while true
+do
+	sleep 20
+	num=`ps -ef|grep manager|grep -v grep|wc -l`
+	if [ $num -eq 0 ];then
+		cd /root/dz_csyp/src&&python manager.py&
+		echo `date +%Y%m%d'-'%H':'%M':'%S%A`"---mysql process was lost" >>$log_file	
+        fi
+done
