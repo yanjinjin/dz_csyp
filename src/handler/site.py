@@ -107,8 +107,11 @@ class SignInHandler(BaseHandler):
                             del self.session['oauth']
                         
                         self.session.save()
-                        url="/signup?sharer="+user.mobile
-            		self.redirect(url,permanent=True)
+			if mobile != "root":
+                        	url="/signup?sharer="+user.mobile
+            			self.redirect(url,permanent=True)
+			else:
+				self.redirect("/admin/users")
 		        return
                     else:
                         self.flash("此账户被禁止登录，请联系管理员。")
