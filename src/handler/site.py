@@ -140,11 +140,14 @@ class SignUpHandler(BaseHandler):
 	user=self.get_current_user()
         sharer = self.get_argument("sharer", None)
 	if user:
-            url="/signup?sharer="+user.mobile
-            if sharer == None:
-		self.redirect(url,permanent=True)
-            else:
-		self.render("site/share.html" , user = user, mobile=user.mobile)
+            if user.mobile != "root":
+            	url="/signup?sharer="+user.mobile
+            	if sharer == None:
+                    self.redirect(url,permanent=True)
+            	else:
+                    self.render("site/share.html" , user = user, mobile=user.mobile) 
+	    else:
+                self.redirect("/admin/users")
 	    return
       
         oauth = None
