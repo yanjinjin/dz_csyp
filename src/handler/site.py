@@ -15,8 +15,12 @@ class IndexHandler(BaseHandler):
             oauth = self.session['oauth']
 	user=self.get_current_user()
         if user:
-            url="/signup?sharer="+user.mobile
-            self.redirect(url,permanent=True)
+            if user.mobile != "root":
+                url="/signup?sharer="+user.mobile
+                self.redirect(url,permanent=True)
+            else:
+                self.redirect("/admin/users")
+            return
 	else:
             self.render("site/signup.html", oauth = oauth)    
 
@@ -67,8 +71,11 @@ class SignInHandler(BaseHandler):
     def get(self):
 	user=self.get_current_user()
         if user:
-	    url="/signup?sharer="+user.mobile
-            self.redirect(url,permanent=True)
+	    if user.mobile != "root":
+	        url="/signup?sharer="+user.mobile
+                self.redirect(url,permanent=True)
+	    else:
+		self.redirect("/admin/users")
             return
         
         oauth = None
@@ -78,13 +85,14 @@ class SignInHandler(BaseHandler):
         self.render("site/signin.html", oauth = oauth, next = self.next_url)
     
     def post(self):
-        if self.get_current_user():
-            self.redirect("/")
-            return
-        
         mobile = self.get_argument("mobile", None)
         password = self.get_argument("password", None)
-        
+        if self.get_current_user():
+            if mobile != "root":
+		self.redirect("/")
+	    else:
+		self.redirect("/admin/users")
+            return    
         if mobile and password:
             try:
                 user = User.get(User.mobile == mobile)
