@@ -170,6 +170,10 @@ class SignUpHandler(BaseHandler):
                     self.flash("请确认输入6位以上新密码")
                 elif password != apassword:
                     self.flash("请确认新密码和重复密码一致")
+		elif len(realname) > 32:
+		    self.flash("微信账号超出长度限制")
+		elif len(realname) < 2:
+		    self.flash("微信账号太短")
                 else:
                     #if UserVcode.select().where((UserVcode.mobile == mobile) & (UserVcode.vcode == vcode)).count() > 0:
                     #    UserVcode.delete().where((UserVcode.mobile == mobile) & (UserVcode.vcode == vcode)).execute()
