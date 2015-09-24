@@ -152,10 +152,11 @@ class SignUpHandler(BaseHandler):
         apassword = self.get_argument("apassword", None)
         vcode = self.get_argument("vcode", None)
         sharer = self.get_argument("sharer", None)
-        
+        realname=self.get_argument("realname",None) 
         
         user = User()
         user.mobile = mobile
+	user.realname = realname
         user.password = User.create_password(password)
         
         try:
@@ -167,8 +168,8 @@ class SignUpHandler(BaseHandler):
                 elif password != apassword:
                     self.flash("请确认新密码和重复密码一致")
                 else:
-                    if UserVcode.select().where((UserVcode.mobile == mobile) & (UserVcode.vcode == vcode)).count() > 0:
-                        UserVcode.delete().where((UserVcode.mobile == mobile) & (UserVcode.vcode == vcode)).execute()
+                    #if UserVcode.select().where((UserVcode.mobile == mobile) & (UserVcode.vcode == vcode)).count() > 0:
+                    #    UserVcode.delete().where((UserVcode.mobile == mobile) & (UserVcode.vcode == vcode)).execute()
                         user.save()
        			user.updatesignin()
                         self.session['user'] = user
@@ -190,8 +191,8 @@ class SignUpHandler(BaseHandler):
                         url="/signup?sharer="+user.mobile
             		self.redirect(url,permanent=True)
 			return
-                    else:
-                        self.flash("请输入正确的验证码")
+                    #else:
+                    #    self.flash("请输入正确的验证码")
             else:
                 self.flash("请输入密码和确认密码")
         except Exception, ex:
