@@ -44,7 +44,7 @@ def syncdb():
         model.create_table()
         logging.info('created table:%s' % model._meta.db_table)
     
-    User.create(mobile = 'root', password = User.create_password('111111'), group = 9)
+    User.create(mobile = 'root', password = User.create_password('Hlw753guoshu'), group = 9)
     Distribution.create(name = '免费配送', price = 0)
     Distribution.create(name = '上门自提', price = 0)
     Category.create(name = '积分商品', slug = 'credit', order = 1)
