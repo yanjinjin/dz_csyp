@@ -9,7 +9,7 @@ a:hover {
   color: #269abc; }
 
 .bg {
-  background: url("adminbg.jpg") repeat-y; }
+  background: url("adminbg-1.jpg") repeat-y; }
 
 .headbg {
   background: #8B7941;
@@ -79,7 +79,7 @@ a:hover {
   .right .table {
     width: 100%; }
     .right .table tr {
-      line-height: 25px; }
+      line-height: 25px;}
       .right .table tr th {
         border-bottom: 1px solid #cccccc;
         font-size: 16px;
