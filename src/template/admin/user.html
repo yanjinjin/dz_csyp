@@ -13,10 +13,9 @@
           <thead>
             <tr>
               <th>手机</th>
-              <th>姓名</th>
-              <th>qq</th>
+              <th>微信账号</th>
+              <th>积分</th>
               <th>注册时间</th>
-              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -24,9 +23,8 @@
             <tr>
               <td>{{u.mobile}}</td>
               <td>{{u.realname}}</td>
-              <td>{{u.qq}}</td>
+              <td>{{u.credit}}</td>
               <td>{{u.lsignined|datetimeformat}}</td>
-              <td>{%if u.group < 9 -%}{% if u.group == 1 -%}<a href="/admin/changeuser/{{u.id}}/0">禁用用户</a>{%-else-%}<a href="/admin/changeuser/{{u.id}}/1">启用用户</a>{%-endif%}{%-endif%}</td>
             </tr>
 			{%- endfor %}
           </tbody>
